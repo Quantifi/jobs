@@ -12,14 +12,14 @@ Developers on the other hand will be able to find jobs and more importantly, mar
 As you're probably aware, the project will be written in NodeJS. Here's what the stack looks like:
  
 ### Backend
-- [NodeJS](nodejs.org) - Server
-- [Express JS](expressjs.com) - Routing, Sessions, Request / Request handling etc.
-- [Mongo DB](mongodb.org) - Database
+- [NodeJS](http://nodejs.org) - Server
+- [Express JS](http://expressjs.com) - Routing, Sessions, Request / Request handling etc.
+- [Mongo DB](http://mongodb.org) - Database
 
 ### Frontend
-- [Jade](jade-lang.com) - HTML Views (Creation & Rendering)
+- [Jade](http://jade-lang.com) - HTML Views (Creation & Rendering)
 - [Stylus](http://learnboost.github.io/stylus/) - Stylesheet (CSS Precompling)
-- [jQuery](jquery.com) - Client Side Processing (validation, AJAX etc)
+- [jQuery](http://jquery.com) - Client Side Processing (validation, AJAX etc)
 
 ## Proposed Feature Set
 Here are a few features that might be interesting to have in the final release. This list isn't meant to be exhaustive, so feel free to share your thoughts. Excited to hear what you think on this :)
@@ -39,7 +39,7 @@ Here are a few features that might be interesting to have in the final release. 
 - Apply for an opening - This could include steps like writing a brief cover letter, uploading a resume & sending it off the employer. Just saying :)
 
 ## How to Contribute?
-You can start by heading to the [project repository on GitHub](github.com/devcongress/jobs). The project has 2 branches: **Master** (Production) and **Develop** (Staging & Testing).<br /><br /> Once you've decided on what story/feature you want to work on:
+You can start by heading to the [project repository on GitHub](https://github.com/devcongress/jobs). The project has 2 branches: **Master** (Production) and **Develop** (Staging & Testing).<br /><br /> Once you've decided on what story/feature you want to work on:
 
 - Fork the repository
 - git clone the repo to your local machine
@@ -47,11 +47,11 @@ You can start by heading to the [project repository on GitHub](github.com/devcon
 - Once you're happy with your changes, merge them back into the Develop branch
 - Next, push your changes to your copy of the repo in github and submit a [pull request over here](https://github.com/devcongress/jobs/pulls)
 
-That's it! Your feature/changes will be tested and merged into the [Live production code](github.com/devcongress/jobs) 
+That's it! Your feature/changes will be tested and merged into the [Live production code](https://github.com/devcongress/jobs) 
 
 Another way you can contribute is to write/run tests against the application, and submit [bugs & issues](https://github.com/devcongress/jobs/issues?state=open) over here.<br /><br />If you prefer, you can help out by writing documentation for the code so new contributors/comers to the community can get started quickly.
 
 We really appreciate your contribution. Lets get this baby on the road!<br />
 Cheers :)
 
-If you have any questions, feel free to reach out. I'm [@mrewusi](twitter.com/mrewusi) on twitter and [nanaewusi](github.com/nanaewusi) on Github.
+If you have any questions, feel free to reach out. I'm [@mrewusi](https://twitter.com/mrewusi) on twitter and [nanaewusi](https://github.com/nanaewusi) on Github.
