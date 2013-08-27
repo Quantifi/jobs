@@ -1,21 +1,31 @@
 {
-	"name": "devcongress-jobs",
-	"description": "Official Job Board for Hiring Developers in Ghana",
-	"version": "0.0.1",
-	"private": true,
-	"scripts": {
-		"start": "node app"
-	},
-	"dependencies": {
-		"express": "3.1.0",
-		"jade": "*",
-		"stylus": "*",
-		"mongoose": "*",
-		"async": "*",
-		"moment": "*"
-	},
-	"engines": {
-		"node": "0.10.x",
-		"npm": "1.2.x"
-	}
+  "name": "devcongress-jobs",
+  "description": "Official Job Board for Hiring Developers in Ghana",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app"
+  },
+  "dependencies": {
+    "express": "3.1.0",
+    "jade": "*",
+    "stylus": "*",
+    "mongoose": "*",
+    "async": "*",
+    "moment": "*"
+  },
+  "engines": {
+    "node": "0.10.x",
+    "npm": "1.2.x"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "watch": "~0.8.0",
+    "grunt-contrib-cssmin": "~0.6.1",
+    "grunt-contrib-uglify": "~0.2.2",
+    "grunt-contrib-jshint": "~0.6.3",
+    "grunt-contrib-stylus": "~0.8.0",
+    "grunt-contrib": "~0.7.0",
+    "grunt-contrib-watch": "~0.5.3"
+  }
 }
