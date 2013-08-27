@@ -32,7 +32,16 @@ module.exports = function(grunt) {
       }
     },
     stylus: {
+      compile: {
+        options: {
+          banner: '<%= banner %>',
+          compress: false,
+          paths: ['./views/stylesheets']
+        },
+        files: {
 
+        }
+      }
     },
     cssmin: {
       compress: {
