@@ -1,7 +1,11 @@
 doctype 5
-html
+html(lang="en")
   head
+    block meta
     title= title
+    block css
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
     block content
+    script(src="http://localhost:3355/livereload.js")
+    block script
