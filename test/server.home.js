@@ -10,16 +10,19 @@ var assert = require('assert'),
 
 
 /**
- * [makeRequest function to use for making request
+ * makeRequest function to use for making request
  * @param  {object}   options
  * @param  {Function} cb
- * @api private
+ * @api public
  * pass in options and provide an optional callback which accepts request(clientRequest) and response(IncomingMessage)
  */
 function makeRequest(options, cb) {
   var args = [].slice.call(arguments),
       request;
 
+ // make an http request with the http module
+
+ // if the args#length is one(1) then handle the request
   if (args.length === 1) {
     request = http.get(options, function (res) {
       res.on('data', function (data) {
@@ -35,6 +38,7 @@ function makeRequest(options, cb) {
       assert.ifError(err);
     });
   }
+  // allow the caller to use his own function to handle request and response
   else {
     request = http.get(options, function (res) {
       cb(request, res);
@@ -54,9 +58,16 @@ describe('Server', function () {
   describe('get `/index` or `/index.html` or `/index.htm` ', function () {
     var optionsTosend = options,
         arrayOfPath = ['/index', '/index.htm', '/index.html'],
-        urlOfResponse,
         count = 0;
 
+    // this function handles the request to thr arrayOfPath
+    // make a request increment the count so the next caller will use url that's next in the arrayOfPath
+    /**
+     * multiPathHandler
+     * @param  {requestObject} req
+     * @param  {responseObject} res
+     * @api private
+     */
     function multiPathHandler(req, res) {
       assert.equal(res.statusCode, 301, 'redirect status code is 301');
       res.on('data', function (data) {
@@ -71,22 +82,26 @@ describe('Server', function () {
       count++;
     }
 
-    function hanler(done) {
+    /**
+     * handler runs async tests fot the arrayOfPath
+     * @param  {Function} done async callback
+     */
+    function handler(done) {
       optionsTosend.path = arrayOfPath[count];
       makeRequest(optionsTosend, multiPathHandler);
       done();
     }
 
     it('should redirect to `/` when url is index', function (done) {
-      hanler(done);
+      handler(done);
     });
 
     it('should redirect to `/` when url is index.htm', function (done) {
-      hanler(done);
+      handler(done);
     });
 
     it('should redirect to `/` when url is index.html', function (done) {
-      hanler(done);
+      handler(done);
     });
   });
 });

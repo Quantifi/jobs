@@ -6,7 +6,6 @@
 /**
  * homePageHandler
  * @param  {object} app
- * @return {undefined}
  */
 function homePageHandler(app) {
 
