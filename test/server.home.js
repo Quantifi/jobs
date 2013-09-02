@@ -1,107 +1,163 @@
-var assert = require('assert'),
-    http = require('http'),
+// In the first tests that I(https://github.com/ngenerio) wrote I realiased when I shut down the server
+// the tests still passed so had to rewrite it to get the desired result
+
+var http = require('http'),
+    domain = require('domain'),
+    assert = require('assert'),
     headers = require('./headers.json'),
+    ifError = assert.ifError,
     options = {
-      port: 3000,
+      host: 'localhost',
+      port: 4400,
       path: '/',
       method: 'GET',
       headers: headers
     };
 
+/**
+ * assert.ifError
+ * @param  {object} err
+ * @throw err;
+* function ifError(err) {
+*  if (err) {
+*    throw err;
+*  }
+* }
+*/
+
+var temporaryArray = [],
+    temporaryObject = {},
+    slice = temporaryArray.slice,
+    toString = temporaryObject.toString;
 
 /**
- * makeRequest function to use for making request
+ * server - make a request
  * @param  {object}   options
- * @param  {Function} cb
- * @api public
- * pass in options and provide an optional callback which accepts request(clientRequest) and response(IncomingMessage)
+ *  eg. options = {
+      host: 'localhost',
+      port: 4400,
+      path: '/',
+      method: 'GET',
+      headers: headers,
+      expected: {
+        status: 500,
+        headers: {
+          'content-type': 'application'/json
+        }
+      }
+    };
+ * @param  {Function} callback
  */
-function makeRequest(options, cb) {
-  var args = [].slice.call(arguments),
-      request;
+function server(options, callback) {
+  var args = slice.call(arguments), req, domainHandler, status, prop, headers, ondone;
 
- // make an http request with the http module
-
- // if the args#length is one(1) then handle the request
   if (args.length === 1) {
-    request = http.get(options, function (res) {
-      res.on('data', function (data) {
-        console.log('got response @devcon-jobs');
-      });
+    // the toString method of Object:: ({}.prototype) provides a finer grain of the type of an object
+    // you can't trust javascript typeof
+    // this is from Javascript garden (https://bonsaiden.github.com/Javascript-Garden)
+    /*
+      "foo" String string
+      new String("foo") String object
+      1.2 Number number
+      new Number(1.2) Number object
+      true Boolean boolean
+      new Boolean(true) Boolean object
+      new Date() Date object
+      new Error() Error object
+      [1,2,3] Array object
+      new Array(1, 2, 3) Array object
+      new Function("") Function function
+      /abc/g RegExp object
+      new RegExp("meow") RegExp object
+      {} Object object
+      new Object() Object object
+    */
+    if ('expected' in options && toString.call(options.expected).slice(8, -1).toLowerCase() === 'object') {
+      status = options.expected.status;
+      headers = options.expected.headers;
+      delete options.expected;
+    }
+    if ('done' in options) {
+      ondone = options.done;
+      delete options.done;
+    }
 
-      res.on('end', function () {
-        console.log('response ended @devcon-jobs');
-      });
-    });
+    // using the domain module helps with handling unhandled errors
+    domainHandler = domain.create();
+    domainHandler.on('error', ifError);
 
-    request.on('error', function (err) {
-      assert.ifError(err);
+    domainHandler.run(function () {
+      req = http[options['method'].toLowerCase()](options, function (res) {
+        assert.equal(res.statusCode, status);
+
+        for (prop in headers) {
+          if (headers.hasOwnProperty(prop) && (prop in res.headers)) {
+            assert.equal(res.headers[prop], headers[prop]);
+          }
+        }
+
+        res.on('data', function (data) {
+          console.log('we yeah! :)-@devcon-jobs')
+        });
+
+        req.end();
+        ondone && ondone();
+      });
     });
   }
-  // allow the caller to use his own function to handle request and response
+  // if a calback function is provided, the normal flow would be like the express way (app.get('/', function (req, res)))
   else {
-    request = http.get(options, function (res) {
-      cb(request, res);
+    req = http[options['method'].toLowerCase()](options);
+
+    req.on('response', function (res) {
+      cb(req, res);
     });
   }
 }
 
 describe('Server', function () {
 
-  describe('get `/`', function () {
-    it('should respond with some data', function (done) {
-      makeRequest(options);
-      done();
+  describe('request to ', function () {
+    it('`/` should respond with response', function (done) {
+      var optionsToSend = options;
+      optionsToSend.expected = {
+        status: 200
+      };
+      optionsToSend.done = done;
+      server(optionsToSend);
     });
   });
 
-  describe('get `/index` or `/index.html` or `/index.htm` ', function () {
-    var optionsTosend = options,
-        arrayOfPath = ['/index', '/index.htm', '/index.html'],
-        count = 0;
+  describe('redirection should work', function () {
+    var arrayOfPath = ['/index', '/index.htm', '/index.html'],
+        count = 0,
+        optionsToSend = options;
 
-    // this function handles the request to thr arrayOfPath
-    // make a request increment the count so the next caller will use url that's next in the arrayOfPath
-    /**
-     * multiPathHandler
-     * @param  {requestObject} req
-     * @param  {responseObject} res
-     * @api private
-     */
-    function multiPathHandler(req, res) {
-      assert.equal(res.statusCode, 301, 'redirect status code is 301');
-      res.on('data', function (data) {
-        console.log('got data @devcon-jobs');
-      });
-
-      req.end();
-
-      req.on('error', function (err) {
-        assert.ifError(err);
-      });
+    // this handler function makes testing the three urls a ease
+    // follows the same logic like the rest
+    // make a request and increment the count
+    function handler(done) {
+      optionsToSend.path = arrayOfPath[count];
+      optionsToSend.expected = {
+        status: 301
+      };
+      optionsToSend.done = done;
+      server(optionsToSend);
       count++;
     }
 
-    /**
-     * handler runs async tests fot the arrayOfPath
-     * @param  {Function} done async callback
-     */
-    function handler(done) {
-      optionsTosend.path = arrayOfPath[count];
-      makeRequest(optionsTosend, multiPathHandler);
-      done();
-    }
+    it('when url is `/index`', function (done) {
+      handler(done);
+      console.log(arrayOfPath[count]);
+    });
 
-    it('should redirect to `/` when url is index', function (done) {
+    it('when url is `/index.htm`', function (done) {
       handler(done);
     });
 
-    it('should redirect to `/` when url is index.htm', function (done) {
-      handler(done);
-    });
-
-    it('should redirect to `/` when url is index.html', function (done) {
+    it('when url is `/index.html`', function (done) {
       handler(done);
     });
   });
+
 });

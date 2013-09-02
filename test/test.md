@@ -5,7 +5,9 @@ The Official Job Board for Developers in Ghana. Looking to hire a developer in G
 
 ### Test
 All test are run using [mocha](https://github.com/visionmedia/mocha)
-To run any test, use mocha or to get a more visual feedback of whats happening, use 
+To run any test, use mocha or to get a more visual feedback of whats happening, use
+
+In the first tests that [ngenerio](https://github.com/ngenerio) wrote, [ngenerio](https://github.com/ngenerio) realiased when [ngenerio](https://github.com/ngenerio) shut down the server the tests still passed so had to rewrite it to get the desired result
 
 ```shell
 mocha --reporter <nameOfReporter>
