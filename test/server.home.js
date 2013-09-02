@@ -8,7 +8,7 @@ var http = require('http'),
     ifError = assert.ifError,
     options = {
       host: 'localhost',
-      port: 4400,
+      port: 3000,
       path: '/',
       method: 'GET',
       headers: headers
@@ -87,7 +87,8 @@ function server(options, callback) {
     domainHandler.on('error', ifError);
 
     domainHandler.run(function () {
-      req = http[options['method'].toLowerCase()](options, function (res) {
+      // http.get || request
+      req = http[options['method'].toLowerCase() || 'request'](options, function (res) {
         assert.equal(res.statusCode, status);
 
         for (prop in headers) {
@@ -107,7 +108,7 @@ function server(options, callback) {
   }
   // if a calback function is provided, the normal flow would be like the express way (app.get('/', function (req, res)))
   else {
-    req = http[options['method'].toLowerCase()](options);
+    req = http[options['method'].toLowerCase() || 'request'](options);
 
     req.on('response', function (res) {
       cb(req, res);
