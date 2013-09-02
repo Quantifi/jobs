@@ -1,5 +1,5 @@
 // In the first tests that I(https://github.com/ngenerio) wrote I realiased when I shut down the server
-// the tests still passed sot had to rewrite it to get the desired result
+// the tests still passed so had to rewrite it to get the desired result
 
 var http = require('http'),
     domain = require('domain'),
@@ -42,7 +42,7 @@ var temporaryArray = [],
       expected: {
         status: 500,
         headers: {
-          'content-type': 'applicatio'/json
+          'content-type': 'application'/json
         }
       }
     };
@@ -97,7 +97,7 @@ function server(options, callback) {
         }
 
         res.on('data', function (data) {
-          console.log('we yeah! :)-@knwoit')
+          console.log('we yeah! :)-@devcon-jobs')
         });
 
         req.end();
