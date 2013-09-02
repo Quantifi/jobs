@@ -53,7 +53,7 @@ function server(options, callback) {
 
   if (args.length === 1) {
     // the toString method of Object:: ({}.prototype) provides a finer grain of the type of an object
-    // you can trust javascript typeof
+    // you can't trust javascript typeof
     // this is from Javascript garden (https://bonsaiden.github.com/Javascript-Garden)
     /*
       "foo" String string
@@ -105,7 +105,7 @@ function server(options, callback) {
       });
     });
   }
-  // if a calback function is provided, the nornam flow would be like the express way (app.get('/', function (req, res)))
+  // if a calback function is provided, the normal flow would be like the express way (app.get('/', function (req, res)))
   else {
     req = http[options['method'].toLowerCase()](options);
 
@@ -133,7 +133,7 @@ describe('Server', function () {
         count = 0,
         optionsToSend = options;
 
-    // this handler function makes testinf the three urls a ease
+    // this handler function makes testing the three urls a ease
     // follows the same logic like the rest
     // make a request and increment the count
     function handler(done) {
