@@ -27,6 +27,6 @@ The name of reporter(ie.nameOfReporter) could be any of the following
 - min
 - json-stream
 - markdown
--- nyan
+- nyan
 
 You can find out more over here [Mocha](http://visionmedia.github.io/mocha/)
