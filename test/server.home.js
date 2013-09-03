@@ -88,7 +88,13 @@ function server(options, callback) {
 
     domainHandler.run(function () {
       // http.get || request
-      req = http[options['method'].toLowerCase() || 'request'](options, function (res) {
+      if (options.method === 'GET') {
+        req = http.get(options);
+      }
+      else {
+        req = http['request'](options);
+      }
+      req.on('response', function (res) {
         assert.equal(res.statusCode, status);
 
         for (prop in headers) {
@@ -108,7 +114,12 @@ function server(options, callback) {
   }
   // if a calback function is provided, the normal flow would be like the express way (app.get('/', function (req, res)))
   else {
-    req = http[options['method'].toLowerCase() || 'request'](options);
+    if (options.method === 'GET') {
+        req = http.get(options);
+      }
+      else {
+        req = http['request'](options);
+      }
 
     req.on('response', function (res) {
       cb(req, res);
